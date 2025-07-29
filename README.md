@@ -1,1 +1,1 @@
-osu
+study notes
