@@ -3,6 +3,10 @@
 ## 参考资料
 三维视觉：原理与实践(课程笔记-相机模型与标定)：
 https://developer.orbbec.com.cn/v/blog_detail?id=903
+对极几何：
+https://blog.csdn.net/tina_ttl/article/details/52749542?fromshare=blogdetail&sharetype=blogdetail&sharerId=52749542&sharerefer=PC&sharesource=weixin_61044335&sharefrom=from_link
+
+
 
 
 ## 一、相机模型
@@ -137,3 +141,6 @@ typedef struct OBCameraParams
 
 
 ## 三、对极几何
+对极几何实际上是“两幅图像之间的对极几何”，它是图像平面与以基线为轴的平面束的交的几何（这里的基线是指连接摄像机中心的直线）
+对极几何（Epipolar Geometry）描述的是两幅视图之间的内在射影关系，与外部场景无关，只依赖于摄像机内参数和这两幅试图之间的的相对姿态
+
