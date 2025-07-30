@@ -7,8 +7,9 @@ https://developer.orbbec.com.cn/v/blog_detail?id=903
 对极几何：
 https://blog.csdn.net/tina_ttl/article/details/52749542?fromshare=blogdetail&sharetype=blogdetail&sharerId=52749542&sharerefer=PC&sharesource=weixin_61044335&sharefrom=from_link
 
-https://blog.csdn.net/Bartender_VA11/article/details/136080481?fromshare=blogdetail&sharetype=blogdetail&sharerId=136080481&sharerefer=PC&sharesource=weixin_61044335&sharefrom=from_link
+https://blog.csdn.net/Bartender_VA11/article/details/136080481?fromshare=blogdetail&sharetype=blogdetail&sharerId=136080481&sharerefer=PC&sharesource=weixin_61044335&sharefrom=from_link  
 
+https://en.wikipedia.org/wiki/Eight-point_algorithm
 
 
 ## 一、相机模型
