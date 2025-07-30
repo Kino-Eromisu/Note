@@ -1,4 +1,4 @@
-# 相机模型和标定 笔记
+# 相机模型和标定 + 对极几何 笔记
 
 ## 参考资料
 三维视觉：原理与实践(课程笔记-相机模型与标定)：
@@ -7,6 +7,7 @@ https://developer.orbbec.com.cn/v/blog_detail?id=903
 对极几何：
 https://blog.csdn.net/tina_ttl/article/details/52749542?fromshare=blogdetail&sharetype=blogdetail&sharerId=52749542&sharerefer=PC&sharesource=weixin_61044335&sharefrom=from_link
 
+https://blog.csdn.net/Bartender_VA11/article/details/136080481?fromshare=blogdetail&sharetype=blogdetail&sharerId=136080481&sharerefer=PC&sharesource=weixin_61044335&sharefrom=from_link
 
 
 
@@ -141,7 +142,39 @@ typedef struct OBCameraParams
     - 可进行图像矫正、视差图计算和三维重建
 
 
-## 三、对极几何
+## 三、对极几何（Epipolar Geometry）  
+
 对极几何实际上是“两幅图像之间的对极几何”，它是图像平面与以基线为轴的平面束的交的几何（这里的基线是指连接摄像机中心的直线）
-对极几何（Epipolar Geometry）描述的是两幅视图之间的内在射影关系，与外部场景无关，只依赖于摄像机内参数和这两幅试图之间的的相对姿态
+对极几何（Epipolar Geometry）描述的是两幅视图之间的内在射影关系，与外部场景无关，只依赖于摄像机内参数和这两幅视图之间的的相对姿态  
+= 用两张图像之间的几何约束，把“哪里可能是同一个 3D 点的投影”这一二维搜索问题降为一维搜索，并由此恢复相机位姿或场景三维结构
+
+### 约束公式
+<img width="241" height="86" alt="image" src="https://github.com/user-attachments/assets/92879700-e4dc-4365-8873-8cf3de5da612" />  
+
+基础矩阵的含义是表达了相机2 对于 相机1的相对位置关系  
+- 该直线上的点 点乘上 向量I 后，结果为0.
+- 该直线外的点 点乘上 标准化的向量I 后，结果为点到该直线上的距离。
+- 已知2维平面上两个不同的点的齐次坐标(x,y,1) 和 (x2,y2,1)，让这两个点作叉乘可以得到经过这两点的直线。
+
+根据齐次坐标的性质：
+- 基础矩阵F 乘 相机1上的某个像素点坐标 ，结果为相机2上的 候选点直线I2
+- I2直线上的任意一点x2 乘上 向量I2 ，结果为 0
+
+### 推导过程
+
+<img width="977" height="328" alt="image" src="https://github.com/user-attachments/assets/c648ddd8-d9d8-4fd3-87a7-3c000cfabe14" />
+
+### 极线约束
+如果p和p'是匹配点，用F计算后结果必须为0。
+作用：排除错误的匹配点
+
+### 基础矩阵F计算
+至少需要八对匹配点（八点算法）
+<img width="849" height="547" alt="image" src="https://github.com/user-attachments/assets/e23f7d5c-bfd0-42e8-8f48-dccbd3fcdbf9" />  
+基础解系的秩+矩阵E EE 的秩 = 9
+由于尺度不确定性和秩约束，各减少一个自由度，9-1-1 = 7。实际上矩阵F仅有七个自由度。
+- 七个自由度下，至少需要八个独立方程才能保证rank(A)=8.因为A为nx9的矩阵
+- 若n = 8，且所有方程线性无关，则rank(A)=8，此时有唯一解，f为一条线。
+- 若n<8，解不唯一，无法确定F
+
 
