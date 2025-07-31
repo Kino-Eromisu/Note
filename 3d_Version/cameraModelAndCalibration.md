@@ -1,17 +1,5 @@
 # 相机模型和标定 + 对极几何 笔记
 
-## 参考资料
-三维视觉：原理与实践(课程笔记-相机模型与标定)：
-https://developer.orbbec.com.cn/v/blog_detail?id=903  
-
-对极几何：
-https://blog.csdn.net/tina_ttl/article/details/52749542?fromshare=blogdetail&sharetype=blogdetail&sharerId=52749542&sharerefer=PC&sharesource=weixin_61044335&sharefrom=from_link
-
-https://blog.csdn.net/Bartender_VA11/article/details/136080481?fromshare=blogdetail&sharetype=blogdetail&sharerId=136080481&sharerefer=PC&sharesource=weixin_61044335&sharefrom=from_link  
-
-https://en.wikipedia.org/wiki/Eight-point_algorithm
-
-
 ## 一、相机模型
 相机模型描述了**三维世界中的点**是如何被投影到**二维图像平面**上的。
 
@@ -31,10 +19,16 @@ s \cdot \begin{bmatrix} u \\ v \\ 1 \end{bmatrix}
 - \([u, v]\)：图像中的像素坐标  
 - \(K\)：内参矩阵  
 - \([R|t]\)：外参（相机的姿态）  
-- \(s\)：缩放因子
+- \(s\)：3D点在相机坐标系中的深度，也可以看作深度Z。由物理投影关系决定。
 
 像素坐标和三维点中最后一个参数1的意义是为了计算齐次，方便计算。
 三维点中最后一个1表示这是一个位置点而不是方向向量，方向向量应为0
+
+**本质上就是一个平移和一个旋转。代表外参的物理意义。**
+
+说小孔成像模型是去畸变的，是因为它建立在理想几何光学的基础假设上。一般用来求畸变系数。
+
+从相机坐标系转为像素坐标系：归一化、内参变换（线性缩放+平移）
 
 ---
 
@@ -60,7 +54,7 @@ fx & 0 & cx \\
 <img width="271" height="103" alt="image" src="https://github.com/user-attachments/assets/1942526c-7475-497a-8cb9-8b47def609de" />
 
 
-外参：在世界坐标系中的参数，比如相机的位置、旋转方向等。分为旋转矩阵和平移
+外参：在世界坐标系中的参数，比如相机的位置、旋转方向等。**分为旋转矩阵和平移**
 
 矩阵，旋转矩阵和平移矩阵共同描述了如何把点从世界坐标系转换到摄像机坐标系。
 
@@ -177,5 +171,17 @@ typedef struct OBCameraParams
 - 七个自由度下，至少需要八个独立方程才能保证rank(A)=8.因为A为nx9的矩阵
 - 若n = 8，且所有方程线性无关，则rank(A)=8，此时有唯一解，f为一条线。
 - 若n<8，解不唯一，无法确定F
+
+
+## 参考资料
+三维视觉：原理与实践(课程笔记-相机模型与标定)：
+https://developer.orbbec.com.cn/v/blog_detail?id=903  
+
+对极几何：
+https://blog.csdn.net/tina_ttl/article/details/52749542?fromshare=blogdetail&sharetype=blogdetail&sharerId=52749542&sharerefer=PC&sharesource=weixin_61044335&sharefrom=from_link
+
+https://blog.csdn.net/Bartender_VA11/article/details/136080481?fromshare=blogdetail&sharetype=blogdetail&sharerId=136080481&sharerefer=PC&sharesource=weixin_61044335&sharefrom=from_link  
+
+https://en.wikipedia.org/wiki/Eight-point_algorithm
 
 
