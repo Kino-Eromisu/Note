@@ -36,8 +36,14 @@
 - Transformer
   - 基于自注意力（Self-Attention）机制
   - BERT
+    - Google的一个自然语言处理模型
+    - 基于transformer encoder构建，但没用decoder，因为BERT是用来做问答、分类等理解类任务的，而不是翻译、写作等生成任务
+    - 使用多头注意力机制，使用残差连接和layernorm，使用前馈神经网络
   - GPT
+    - 只使用了decoder的堆叠部分，没完整使用decoder，没用encoder
+    - 用自回归方式进行文本生成
   - ViT
+    - 视觉图像专用transformer
 - RNN
 - MLP  
 
