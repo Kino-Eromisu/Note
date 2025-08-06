@@ -102,7 +102,7 @@ U-Net 2D: [Downsample → 2D Conv] ×4 → [Upsample + Skip] ×4
 V-Net 3D: [Downsample → 3D Conv] ×4 → [Upsample + 3D Skip] ×4  
 编码器（下采样）  
 1. 使用多个3D卷积 + Relu。
-2. 使用stride=2的卷积代替了最大池化的下采样。
+2. 使用stride=2的卷积代替了最大池化的下采样。stride=2 的卷积会让特征图的尺寸变为原来的一半（在每个空间维度上），类似于 max pooling 的效果，但带有参数（可学习）。
 3. 提取低分辨率高语义的体积特征（利用深度信息，学习的还是语义）
 解码器（上采样）
 1. 使用转置卷积进行上采样（deconv）
