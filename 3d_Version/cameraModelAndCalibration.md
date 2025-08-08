@@ -168,6 +168,10 @@ typedef struct OBCameraParams
 <img width="849" height="547" alt="image" src="https://github.com/user-attachments/assets/e23f7d5c-bfd0-42e8-8f48-dccbd3fcdbf9" />  
 基础解系的秩+矩阵E EE 的秩 = 9
 由于尺度不确定性和秩约束，各减少一个自由度，9-1-1 = 7。实际上矩阵F仅有七个自由度。
+
+因为齐次矩阵，第九个参数比例缩放无意义，所以-1。
+但是不是任意的 3×3 矩阵都可以是基础矩阵，必须满足结构上的约束，即它的秩为 2（rank = 2）。
+
 - 七个自由度下，至少需要八个独立方程才能保证rank(A)=8.因为A为nx9的矩阵
 - 若n = 8，且所有方程线性无关，则rank(A)=8，此时有唯一解，f为一条线。
 - 若n<8，解不唯一，无法确定F
