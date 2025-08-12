@@ -6,7 +6,7 @@
 常见坐标系：
 - 世界坐标系（Xw,Yw,Zw）
 - 相机坐标系（Xc,Yc,Zc）
-- 归一化坐标系(Xn,Yn)
+- 归一化坐标系(Xn,Yn)，范围(-1,1)
 <img width="282" height="78" alt="image" src="https://github.com/user-attachments/assets/78584eb2-f41c-4193-946d-6c332fb60c32" />
 
 - 图像坐标系(x,y)物理长度为单位，通常原点在图像中心
@@ -22,11 +22,12 @@
 <img width="660" height="682" alt="image" src="https://github.com/user-attachments/assets/77fd058b-3069-42cb-98f8-95cf61b15983" />
 
 ## 相机坐标系到图像坐标系
+### 包括归一化步骤
 <img width="444" height="234" alt="image" src="https://github.com/user-attachments/assets/3e0d830d-0557-4098-942c-5290cb63e8bf" />  
 <img width="693" height="169" alt="image" src="https://github.com/user-attachments/assets/f3d67c30-89df-445c-8704-74acb8b638d0" />
 
 ## 图像坐标系到像素坐标系
-由于图像坐标系和像素坐标系处于同一平面，故两者之间的差异在于坐标原点的位置和单位。像素坐标系的原点在图像坐标系的左上角，同时像素坐标系的单位为像素。
+由于图像坐标系和像素坐标系**处于同一平面**，故两者之间的差异在于坐标原点的位置和单位。像素坐标系的原点在图像坐标系的左上角，同时像素坐标系的单位为像素。
 <img width="750" height="412" alt="image" src="https://github.com/user-attachments/assets/4470d90d-3841-4828-bf19-222712db28b8" />  
 <img width="688" height="378" alt="image" src="https://github.com/user-attachments/assets/ad556e29-f4aa-428e-a0a0-c766d42fae0e" />
 
