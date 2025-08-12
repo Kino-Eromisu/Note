@@ -6,7 +6,7 @@
 常见坐标系：
 - 世界坐标系（Xw,Yw,Zw）
 - 相机坐标系（Xc,Yc,Zc）
-- 归一化坐标系(Xn,Yn)，范围(-1,1)
+- 归一化坐标系(Xn,Yn)，范围不一定在(-1,1)中，主要操作是去除Zc
 <img width="282" height="78" alt="image" src="https://github.com/user-attachments/assets/78584eb2-f41c-4193-946d-6c332fb60c32" />
 
 - 图像坐标系(x,y)物理长度为单位，通常原点在图像中心
