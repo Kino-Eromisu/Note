@@ -17,6 +17,7 @@
 归一化坐标系 --[乘焦距 f, 传感器物理尺寸]--> 图像坐标系  
 图像坐标系  --[像素缩放 + 主点平移]--> 像素坐标系  
 
+# 世界坐标系 ——> 像素坐标系
 ## 世界坐标系到相机坐标系
 <img width="547" height="470" alt="image" src="https://github.com/user-attachments/assets/040eb637-27ba-450e-997e-cd1baaa13fed" />  
 <img width="660" height="682" alt="image" src="https://github.com/user-attachments/assets/77fd058b-3069-42cb-98f8-95cf61b15983" />
@@ -31,8 +32,40 @@
 <img width="750" height="412" alt="image" src="https://github.com/user-attachments/assets/4470d90d-3841-4828-bf19-222712db28b8" />  
 <img width="688" height="378" alt="image" src="https://github.com/user-attachments/assets/ad556e29-f4aa-428e-a0a0-c766d42fae0e" />
 
-  
+# 像素坐标系 ——> 世界坐标系
+## 像素坐标系到图像坐标系
+像素坐标系转为图像坐标系，一位两个坐标系同属于一个平面，仅单位不同，原点位置不同。因此只需要进行缩放和平移。
+
+## 图像坐标系到归一化坐标系
+图像坐标系单位(x,y)，除焦距f，得到归一化坐标系
+<img width="159" height="127" alt="image" src="https://github.com/user-attachments/assets/d82f26ed-9309-4d3c-ab77-af8f537e8e8d" />
+
+
+## 归一化坐标系到相机坐标系
+归一化坐标系到相机坐标系的转换中缺少Zc，关键的深度信息，表示该点到相机光心的距离。。
+双目可以通过视差计算深度信息
+<img width="231" height="87" alt="image" src="https://github.com/user-attachments/assets/648df51a-b108-43cc-bc53-9296732207dd" />  
+- f = 焦距（像素单位）
+- B = 双目基线（两个相机之间的距离）
+- d = 左右像素坐标差（视差）
+
+深度相机可以直接获取Zc深度
+
+单目相机需要通过假定平面法/PnP
+<img width="240" height="104" alt="image" src="https://github.com/user-attachments/assets/3599aab2-bfc7-4f26-9adf-b418f8b759f7" />
+- 假定平面法
+  - 假设目标点落在已知平面（例如地面）上，则这个平面的方程已知。法向量n=(0,1,0):y轴向上
+  - 或是使用ransac、最小二乘
+  - 将像素坐标转成相机坐标系的一条射线（方向向量）
+  - 计算该射线与已知平面的交点 → 得到 Zc
+- PnP
+  - 已知场景中若干已知 3D 点的像素位置，通过求解外参来推导 Zc
+
+## 相机坐标系到世界坐标系
+旋转+平移
+
 
 # 参考内容
 相机模型中四个坐标系的关系：
-https://zhuanlan.zhihu.com/p/125006810
+https://zhuanlan.zhihu.com/p/125006810  
+视觉SLAM十四讲
