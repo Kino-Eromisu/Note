@@ -63,6 +63,8 @@
 
 ## 相机坐标系到世界坐标系
 旋转+平移
+<img width="330" height="135" alt="image" src="https://github.com/user-attachments/assets/202b1f3a-fbf4-4447-b153-1202e8683161" />  
+R是3*3矩阵，T是3*1矩阵，[R|T]矩阵是4*4
 
 
 # 参考内容
