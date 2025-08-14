@@ -95,8 +95,11 @@ BN跨Batch归一化通道、LN跨Channel归一化样本
 - 多通道机制：每个卷积核生成一个特征通道，通道间组合表示复杂特征（如颜色+纹理+形状）
 - 局部连接：只连接前一层的局部区域，只处理局部像素内，比如3x3，5x5
 - 参数共享：同一卷积层的所有神经元（卷积核）使用相同的权重（filter）
+卷积过程如图所示：  <img width="583" height="460" alt="image" src="https://github.com/user-attachments/assets/aa94b48f-c4a2-43e9-8a90-d311f254fb26" />
 
+从数学的层次来讲，卷积就是将卷积核大小内的像素点，经过加权和，得到一个新的像素点。这个像素点在图像的层次上就可以反映原图像的特征。上图中原图像对应卷积的位置大小称为得到像素点对应的感受野（Receptive Field)。随着卷积核的平移，原图像的像素点会通过卷积得到一张新的特征图（也就是上图右边的那张），经过卷积后，输出的特征图可有效提取原图像的特征，达到图像识别的功能。
 
+个人理解总结：  
 可以把整张图像的卷积输出的特征想象成特征池（标准来讲是多维特征图），突出的显著特征会高一些。卷积操作通过滑动窗口（卷积核）对图像进行局部扫描，提取不同区域的空间特征。对卷积得到的特征使用激活函数进行激活，可以解决非线性问题。（由于卷积操作是由输入矩阵与卷积核矩阵进行相差的线性变化关系，需要激活层对其进行非线性的映射。）对特征池中的所有特征进行池化，缩小池中的信息，保留最显著的特征。池子可能不止一个，有浅层和深层，浅层可能为边缘，深层可能为物体检测。所以浅层是对图像进行初步的边缘、颜色、纹理，深层是学习如何组合浅层输出的特征，如语义。  
 **实际代码中，这些“池子”就是多维张量（如[batch, channels, height, width]）**
 
@@ -120,7 +123,7 @@ YOLO 的输出是密集预测的框集合，它并不会尝试把多个相邻网
 7. 后处理，非极大值抑制NMS。在众多猫猫框中，选出最猫猫的那个：筛选掉低分数的猫猫框，将框和分数最高的那个一一做对比（有一个阈值），小于的放一边（放下一轮去看，万一不止一只猫猫），大于阈值的，就是框重叠了，合并成分数最高的那个
 
 
-### ResNet 残差神经网络 2D
+### ResNet(2015) 残差神经网络 2D
 x → [Conv1x1, Conv3x3(groups=32), Conv1x1] + x → ReLU  
 在ResNet网络提出之前，传统的卷积神经网络都是通过将一系列卷积层与下采样层进行堆叠得到的。但是当堆叠到一定网络深度时，就会出现两个问题：
 - 梯度消失或梯度爆炸
@@ -168,6 +171,37 @@ V-Net 3D: [Downsample → 3D Conv] ×4 → [Upsample + 3D Skip] ×4
 | **计算复杂度**   | 中 (约50 GFLOPs @640×640)                  | 高 (约4 GFLOPs @224×224)               | 极高 (约500 GFLOPs @128³)         |
 | **开源实现**     | [Ultralytics](https://github.com/ultralytics) | [TorchVision](https://pytorch.org/vision) | [MONAI](https://monai.io/)       |  
 
+## CNN扩展，并非不重要或不常用，只是后加入笔记中
+### LeNet(1998)
+Yan LeCun发明，应用于图像分类。主要用于**手写数字识别**
+结构：卷积层 → 子采样层（平均池化） → 全连接层
+激活函数使用sigmoid/tanh
+输入灰度图
+
+### AlexNet(2012)
+用于ImageNet 分类（1000类） 
+激活函数使用Relu  
+Dropout：抑制全连接层过拟合  
+数据增强：平移、翻转、变化颜色  
+GPU 加速训练  
+使用 大卷积核（11×11、5×5） 和更深层数  
+LRN（Local Response Normalization）层（后来很少用了）
+
+### VGG(2014)
+用**更小的卷积核（3×3）**堆叠代替大卷积核  
+两个 3×3 卷积相当于一个 5×5 卷积，但参数更少、非线性更多  
+网络深度加大（VGG16、VGG19）  
+结构非常规则：
+卷积(3×3)×2/3 → 最大池化(2×2) → 重复
+
+证明了深度和小卷积核的有效性  
+结构规整，便于迁移到其他任务（分割、检测等）
+
+### GoogleNet(2014)
+Inception 模块：在同一层内用多种卷积核（1×1、3×3、5×5）+ 池化并行提取特征，然后在通道维度拼接  
+1×1 卷积 做通道降维（减少计算量）  
+网络深度更深，但参数量比 VGG 小很多  
+引入辅助分类器（辅助梯度传播，减轻梯度消失）
   
 ## Transformer
 核心：	自注意力、前馈网络
@@ -211,6 +245,13 @@ Transformer的“池”是全局动态的，通过注意力权重直接关联任
 
 图像 → Patch → [CLS] + Patch序列 → Transformer 编码器 → 得到 [CLS] 向量  → 全连接层 → 分类 logits → softmax → 各类别概率
 
+## CNN + Transformer = LETNet
+CNN U-Net 在编码器输出的特征图中添加 Transformer 模块，让局部特征通过自注意力增强全局感受野  
+CNN：强在局部卷积感受野、平移不变性  
+Transformer：强在长距离依赖建模、捕获全局上下文  
+LETNet 的设计思想：CNN 捕捉低层细节 + Transformer 捕捉高层全局关系  
+
+论文：https://guangweigao.github.io/paper/TITS-LETNet.pdf
 
 
 ## 常用激活函数和架构使用组合
@@ -223,3 +264,5 @@ Transformer的“池”是全局动态的，通过注意力权重直接关联任
 https://github.com/scutan90/DeepLearning-500-questions/blob/master/ch03_%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/%E7%AC%AC%E4%B8%89%E7%AB%A0_%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80.md  
 
 https://github.com/scutan90/DeepLearning-500-questions/blob/master/ch05_%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(CNN)/%E7%AC%AC%E4%BA%94%E7%AB%A0_%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(CNN).md  
+
+LetNet 论文：  https://guangweigao.github.io/paper/TITS-LETNet.pdf
