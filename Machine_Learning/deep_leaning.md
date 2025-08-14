@@ -251,7 +251,7 @@ CNN：强在局部卷积感受野、平移不变性
 Transformer：强在长距离依赖建模、捕获全局上下文  
 LETNet 的设计思想：CNN 捕捉低层细节 + Transformer 捕捉高层全局关系  
 
-论文：https://guangweigao.github.io/paper/TITS-LETNet.pdf
+论文及github：https://guangweigao.github.io/paper/TITS-LETNet.pdf  https://github.com/IVIPLab/LETNet
 
 
 ## 常用激活函数和架构使用组合
@@ -265,4 +265,4 @@ https://github.com/scutan90/DeepLearning-500-questions/blob/master/ch03_%E6%B7%B
 
 https://github.com/scutan90/DeepLearning-500-questions/blob/master/ch05_%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(CNN)/%E7%AC%AC%E4%BA%94%E7%AB%A0_%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(CNN).md  
 
-LetNet 论文：  https://guangweigao.github.io/paper/TITS-LETNet.pdf
+LetNet 论文：  https://guangweigao.github.io/paper/TITS-LETNet.pdf  https://github.com/IVIPLab/LETNet
