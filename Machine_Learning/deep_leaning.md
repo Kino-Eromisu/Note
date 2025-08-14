@@ -1,4 +1,10 @@
 # 深度学习
+## 神经网络(怎么看不懂)
+神经网络其实就是一个输入X到输出Y的映射函数：f(X)=Y，函数的系数就是我们所要训练的网络参数W  
+### 前向传播
+### 反向传播
+反向传播算法的核心是代价函数 C 对网络中参数（各层的权重w和偏置b）的偏导表达式 ∂C/∂w 和 ∂C/∂b。这些表达式描述了代价函数值C随权重w或偏置b变化而变化的程度。到这里，BP算法的思路就很容易理解了：如果当前代价函数值距离预期值较远，那么我们通过调整w和b的值使新的代价函数值更接近预期值（和预期值相差越大，则w和b调整的幅度就越大）。一直重复该过程，直到最终的代价函数值在误差范围内，则算法停止。
+
 ## 基础知识
 ### 激活函数
 帮网络引入“非线性”。能使神经网络学会模式和规律。否则线性关系的神经网络实在太差。  
@@ -249,9 +255,19 @@ Transformer的“池”是全局动态的，通过注意力权重直接关联任
 CNN U-Net 在编码器输出的特征图中添加 Transformer 模块，让局部特征通过自注意力增强全局感受野  
 CNN：强在局部卷积感受野、平移不变性  
 Transformer：强在长距离依赖建模、捕获全局上下文  
-LETNet 的设计思想：CNN 捕捉低层细节 + Transformer 捕捉高层全局关系  
+LETNet 的设计思想：CNN 捕捉低层细节 + Transformer 捕捉高层全局关系，并合理降低内存消耗：  
+<img width="458" height="368" alt="image" src="https://github.com/user-attachments/assets/d7903eb1-86af-4337-8bf6-7a9e34b598df" />
+  
+1. 论文中提出了一种Lightweight Dilated Bottleneck（LDB，轻量膨胀瓶颈结构），**由膨胀卷积和深度可分离卷积组成**，可极大压缩参数量和计算量.  <img width="431" height="358" alt="image" src="https://github.com/user-attachments/assets/3d6a6466-66cd-4328-a631-964b900a2897" />
+Squeeze是压缩，Unsqueeze是增加维度  
 
-论文及github：https://guangweigao.github.io/paper/TITS-LETNet.pdf  https://github.com/IVIPLab/LETNet
+2. 提出混合网络模型 LetNet，用于语义分割。使用简洁的解码编码结构，并使用transformer 作为胶囊网络去学习全局信息。同时，在跳跃连接中引入 特征增强模块（Feature Enhancement，FM），在恢复分辨率的过程中补充边界细节信息。  <img width="946" height="306" alt="image" src="https://github.com/user-attachments/assets/8fb5cc63-fc71-434c-8e5b-6c9047a575f3" />
+编码器和解码器为 CNN 结构，用于提取局部特征，从而更好地表示图像。  Transformer 通过自注意力（Self-Attention）和多层感知机（MLP）结构，能够捕捉复杂的空间变换和远距离特征依赖，从而获得全局特征表示。  三条长跳跃连接的设计灵感来自 UNet ，它将低层次的空间信息与高层次的语义信息结合，从而实现高质量的分割效果。  
+
+3. 在单张 RTX 3090 硬件平台上，LETNet 在 Cityscapes 测试集上取得了 72.8% 的 mIoU，仅使用 0.95M 参数量；在 CamVid 数据集上取得了 70.5% 的优异性能。该性能优于大多数现有模型。
+
+论文及github：https://guangweigao.github.io/paper/TITS-LETNet.pdf  
+https://github.com/IVIPLab/LETNet
 
 
 ## 常用激活函数和架构使用组合
@@ -265,4 +281,12 @@ https://github.com/scutan90/DeepLearning-500-questions/blob/master/ch03_%E6%B7%B
 
 https://github.com/scutan90/DeepLearning-500-questions/blob/master/ch05_%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(CNN)/%E7%AC%AC%E4%BA%94%E7%AB%A0_%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(CNN).md  
 
-LetNet 论文：  https://guangweigao.github.io/paper/TITS-LETNet.pdf  https://github.com/IVIPLab/LETNet
+LetNet 论文：  https://guangweigao.github.io/paper/TITS-LETNet.pdf  
+https://github.com/IVIPLab/LETNet
+
+前向传播、反向传播：  https://blog.csdn.net/qq_16137569/article/details/81449209?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522894da9ce6b4863afb52b2f798168c10f%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=894da9ce6b4863afb52b2f798168c10f&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-81449209-null-null.142^v102^pc_search_result_base1&utm_term=%E5%89%8D%E5%90%91%E4%BC%A0%E6%92%AD%E5%92%8C%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD&spm=1018.2226.3001.4187  
+http://neuralnetworksanddeeplearning.com/  
+
+卷积神经网络CNN的反向传播原理：  
+https://blog.csdn.net/qq_16137569/article/details/81477906?spm=1001.2014.3001.5502
+
