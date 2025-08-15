@@ -1,4 +1,4 @@
-# 坐标系转换笔记
+<img width="696" height="439" alt="image" src="https://github.com/user-attachments/assets/f9c13794-abc6-49db-b457-4f41ae281633" /># 坐标系转换笔记
 # 相机模型、参数和各个坐标系(世界坐标系、相机坐标系、归一化坐标系、图像坐标系、像素坐标系之间变换）
 
 简单语言：**世界坐标系**通过平移旋转得到**相机坐标系**，**相机坐标系**通过相似三角形（满足小孔成像模型）得到**图像坐标系**，**图像坐标系**通过平移和缩放得到**像素坐标系**  。
@@ -55,6 +55,10 @@
 <img width="240" height="104" alt="image" src="https://github.com/user-attachments/assets/3599aab2-bfc7-4f26-9adf-b418f8b759f7" />
 - 假定平面法
   - 假设目标点落在已知平面（例如地面）上，则这个平面的方程已知。法向量n=(0,1,0):y轴向上
+    - 然后图像坐标系上一点穿过相机光心射线与平面相交，交点可以得到x和z坐标，一般y为0（高度为0），
+    - <img width="871" height="331" alt="image" src="https://github.com/user-attachments/assets/a62d9778-8831-4c38-977f-967f9cd7369d" />
+    - <img width="696" height="439" alt="image" src="https://github.com/user-attachments/assets/a6645529-5be4-4d28-aa95-55f25e238467" />
+    - <img width="637" height="365" alt="image" src="https://github.com/user-attachments/assets/509363cf-4ab4-48de-9d7d-62977f34eb1e" />
   - 或是使用ransac、最小二乘
   - 将像素坐标转成相机坐标系的一条射线（方向向量）
   - 计算该射线与已知平面的交点 → 得到 Zc
