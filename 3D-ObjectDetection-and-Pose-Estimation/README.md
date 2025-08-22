@@ -6,14 +6,17 @@
 <img width="969" height="500" alt="image" src="https://github.com/user-attachments/assets/9ca1cf9c-74cf-452b-a3f7-728b2413f9ee" />  
 
 详解：  
-**深度估计**  
-DTSDF
+
+**深度估计**
+DTSDF  
 - 密集采样TSDF。Truncated Signed Distance Function ：截断符号距离函数
 - 一种利用截断符号距离函数进行3D重建的方法
 - 将3D空间划分为体素网格。SDF符号距离函数将每个体素存储一个值，表示该点到最近物体表面的距离。点在物体内部为负，外部为正，表面正好为0。TSDF中的T代表截断(Truncated)，只关心物体表面附近一定范围内的距离值，超出范围的被“截断”为一个固定值。这大大节省了存储和计算量。（Densely Sampled)：指的是使用高分辨率的体素网格进行密集采样，以重建更精细的细节。
+
 **DPM**  
-Def-3D
+Def-3D  
 - depth Estimation Fusion for 3D Reconstruction：基于深度估计融合的3D重建
+
 **深度图特征**  
 Depth R-CNN
 - 一个两阶段的检测器。第一阶段提出2D候选框，第二阶段利用预测的深度信息或表面法线等特征来估计3D属性。
@@ -24,6 +27,7 @@ AD3D
 - 简单理解：一个复杂机器（3D检测），AD3D不是直接研究整个机器，而是自动把它拆成齿轮、电路、外壳等零件（自动分解），分别研究每个零件（子网络处理），最后再组合起来理解整个机器（融合预测）。
 2d-driven
 - 2D-driven：2D驱动。一种经典思路：先检测2D目标，再基于2D框估计3D信息（尺寸、方向、深度）。
+
 **3D卷积**  
 SS
 - 
@@ -32,6 +36,7 @@ DSS
 3D-SSD(2020.4.9)
 - https://github.com/dvlab-research/3DSSD
 - 是一种单阶段(one stage)目标检测算法，能够在一张图中同时检测物体
+
 **点云特征**
 **上下文信息**
 **单目视觉-先验信息融合**
