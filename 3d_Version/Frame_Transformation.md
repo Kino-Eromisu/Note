@@ -71,6 +71,56 @@
 R是3*3矩阵，T是3*1矩阵，[R|T]矩阵是4*4
 
 
+# 代码
+## 相机坐标系转机器人坐标系
+```cpp
+while (!estimator_inited_tf)
+{
+    Eigen::Matrix4f camera2Robot_ = Eigen::Matrix4f::Identity(); /*相机（点云相机坐标系）到机器人坐标系变换矩阵*/
+    auto tf_result = get_transform("base_link1", "camera_link", ros::Time(), ros::Duration(0.05));
+    // 循环等待，直到能拿到 "camera_link" → "base_link1" 的 TF 变换
+    if (tf_result)
+    {
+        float tx_, ty_, tz_;
+        float r00, r01, r02;
+        float r10, r11, r12;
+        float r20, r21, r22;
+        auto tf_result_valse = tf_result.value();
+        auto rotation = tf_result_valse.transform().rotation();
+
+        //translation (tx, ty, tz)：相机坐标系原点在机器人坐标系下的位置
+        tx_ = tf_result_valse.transform().translation().x();
+        ty_ = tf_result_valse.transform().translation().y();
+        tz_ = tf_result_valse.transform().translation().z();
+        tf2::Quaternion quaternion(rotation.x(), rotation.y(), rotation.z(), rotation.w());
+        // 把四元数转为3x3的旋转矩阵
+        tf2::Matrix3x3 rotation_matrix(quaternion); // rotation_matrix[0][0]
+        // 标准4x4旋转矩阵 R T 0 1：R = 相机坐标系相对于机器人坐标系的旋转矩阵；t = 相机坐标系原点在机器人坐标系下的位置
+        camera2Robot_ << rotation_matrix[0][0], rotation_matrix[0][1], rotation_matrix[0][2], tx_,
+                        rotation_matrix[1][0], rotation_matrix[1][1], rotation_matrix[1][2], ty_,
+                        rotation_matrix[2][0], rotation_matrix[2][1], rotation_matrix[2][2], tz_,
+                        0, 0, 0, 1.0;
+        m_charge_pose_estimator.m_params.cameraleft_zrobot = camera2Robot_;
+        estimator_inited_tf = true;
+    }
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+}
+auto rgbimage = cv_rgb->image.clone();
+```
+
+```cpp
+// 代码实现四元数转3x3旋转矩阵
+Eigen::Matrix3f quaternionToRotation(float x, float y, float z, float w)
+{
+    Eigen::Matrix3f R;
+    R << 1 - 2 * (y * y + z * z),     2 * (x * y - z * w),     2 * (x * z + y * w),
+         2 * (x * y + z * w),     1 - 2 * (x * x + z * z),     2 * (y * z - x * w),
+         2 * (x * z - y * w),         2 * (y * z + x * w), 1 - 2 * (x * x + y * y);
+    return R;
+}
+```
+
+
 # 参考内容
 相机模型中四个坐标系的关系：
 https://zhuanlan.zhihu.com/p/125006810  
