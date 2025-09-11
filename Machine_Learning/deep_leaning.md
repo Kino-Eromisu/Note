@@ -88,6 +88,39 @@ BN跨Batch归一化通道、LN跨Channel归一化样本
 - RNN
 - MLP  
 
+## 语义分割 (Semantic Segmentation)
+**定义**：对图像中每一个像素分类，但 **不区分实例**（同类目标合并在一起）。  
+**代表模型**：  
+- FCN (2014) → 最早的全卷积分割网络  
+- SegNet (2015) → 编码器-解码器结构  
+- U-Net (2015) → 医学图像分割常用，跳跃连接保留细节  
+- PSPNet (2017) → 金字塔池化，捕捉全局上下文  
+- DeepLab 系列  
+  - DeepLabv1 (2015) → 空洞卷积  
+  - DeepLabv2 (2016) → ASPP  
+  - DeepLabv3 (2017) → ASPP + 更强 backbone  
+  - DeepLabv3+ (2018) → 解码器增强边界  
+- HRNet (2019) → 高分辨率特征表示  
+- SegFormer (2021) → Transformer 架构  
+---
+## 实例分割 (Instance Segmentation)
+**定义**：不仅要分割像素，还要区分 **同类的不同实例**（比如两只狗）。  
+**代表模型**：  
+- Mask R-CNN (2017) → Faster R-CNN + 分割分支  
+- YOLACT (2019) → 一阶段实例分割  
+- SOLO / SOLOv2 (2019/2020) → 直接预测实例 mask  
+- CondInst (2020) → 动态卷积做实例 mask  
+- Mask2Former (2022) → Transformer 架构实例/全景分割统一  
+---
+## 全景分割 (Panoptic Segmentation)
+**定义**：语义分割 + 实例分割的结合 → 同时处理“可数实例”（人、车）和“不可数区域”（天空、道路）。  
+**代表模型**：  
+- Panoptic FPN (2019)  
+- Panoptic DeepLab (2020) → 基于 DeepLabv3+ 扩展  
+- MaskFormer (2021)  
+- Mask2Former (2022) → SOTA，全能分割模型  
+---
+
 ## CNN
 核心：卷积、池化  
 擅长做图像、网格数据处理  
@@ -208,6 +241,12 @@ Inception 模块：在同一层内用多种卷积核（1×1、3×3、5×5）+ �
 1×1 卷积 做通道降维（减少计算量）  
 网络深度更深，但参数量比 VGG 小很多  
 引入辅助分类器（辅助梯度传播，减轻梯度消失）
+
+### DeepLabV3(2017)
+语义分割，创新点是使用了空洞卷积，和ASPP。
+普通卷积的卷积核是仅观察临近区域，空洞卷积会在卷积核之间插入空格，不增加参数量的前提下去增加感受野.ASPP让多种dilation rate 的空洞卷积并行，让网络在多个尺度下提取特征。同时感知近处和远处的信息，提高分割效果。
+**边界信息不足，尤其是物体边缘，会变得模糊。 空洞卷积+ResNet101的结构使推理速度变慢。 并非end-to-end检测模型，只能做分割。**
+
   
 ## Transformer
 核心：	自注意力、前馈网络
