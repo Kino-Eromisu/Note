@@ -91,3 +91,57 @@ void pointerDemo() {
 ```
 <img width="639" height="249" alt="image" src="https://github.com/user-attachments/assets/0a7e3577-0a6c-434a-8040-95ceccab7c23" />
 
+# 17 引用
+引用说白了就是指针的扩展
+不占用内存，没有真正的存储空间。引用就是给现有的变量起一个别名，变量和它的引用指向相同的地址。
+```cpp
+void inforcement(int value) {
+    // 也相当于引用，将a引用到这里，作为value
+    value++;
+    std::cout << value << std::endl;
+}
+
+// 引用（Cherno）
+void referenceDemo() {
+    int a = 10;
+    int &ref = a; // ref 只存在在这里，是a的小名，我们如果打印ref，只会得到a
+    ref = 20; // 这里通过改变ref，将a改为了20
+    inforcement(a);
+    std::cout << a << std::endl;
+}
+```
+
+如果引用的是a的地址，也就是&a，使用的时候需要解引用。结果也是一样的
+```
+void inforcement(int* value) { //需要进行解引用
+    // 如果传递的是一个指针，也就是a的地址，那么我们就可以直接写入这个内存
+    (*value)++; //*value 解引用就是逆向引用
+    std::cout << *value << std::endl;
+}
+
+// 引用（Cherno）
+void referenceDemo() {
+    int a = 10;
+    int &ref = a; // ref 只存在在这里，是a的小名，我们如果打印ref，只会得到a
+    ref = 20; // 这里通过改变ref，将a改为了20
+    inforcement(&a); // 这里如果改为引用呢
+    // std::cout << a << std::endl;
+}
+```
+
+实在是过于复杂不好看，修改一下：
+```
+void inforcement(int& value) { // 不需要指针了，引用即可
+    // 将a引用到这里，作为value
+    value++;
+    std::cout << value << std::endl;
+}
+
+// 引用（Cherno）
+void referenceDemo() {
+    int a = 10;
+    int &ref = a;
+    ref = 20; 
+    inforcement(a); // 只引用a
+}
+```
