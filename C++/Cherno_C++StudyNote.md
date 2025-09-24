@@ -91,6 +91,7 @@ void pointerDemo() {
 ```
 <img width="639" height="249" alt="image" src="https://github.com/user-attachments/assets/0a7e3577-0a6c-434a-8040-95ceccab7c23" />
 
+
 # 17 引用
 引用说白了就是指针的扩展
 不占用内存，没有真正的存储空间。引用就是给现有的变量起一个别名，变量和它的引用指向相同的地址。
@@ -144,4 +145,50 @@ void referenceDemo() {
     ref = 20; 
     inforcement(a); // 只引用a
 }
+```
+
+# 18 类
+类就是一个class，将函数和参数规整更美观好看，便于维护这样。
+class xxx{};
+public部分就是公开的，所有函数可见的。
+```
+class Player{
+public: //在类以外的任何地方都可见
+    int x,y;
+    int speed;
+    void move( int xa, int ya) {
+        x += xa * speed;
+        y += ya * speed;
+    }
+}; // class  } need ;
+
+int main(){
+    Player player;
+    player.move( 1, 10);
+
+    std::cin.get();
+}
+```
+
+如果我们不将void函数写在class内，要如何使用class中的参数？可以用，一个引用就可以了..但真的很麻烦啊。
+```
+class Player{
+public: //在类以外的任何地方都可见
+    int x = 1,y = 2;
+    int speed = 10;
+}; // class  } need ;
+
+void move(Player& player, int xa, int ya) {
+    player.x += xa * player.speed;
+    player.y += ya * player.speed;
+
+    std::cout << "x = " << player.x << ", y = " << player.y << std::endl;
+}
+int main(){
+    Player player;
+    move(player, 1, 1);
+
+    std::cin.get();
+}
+
 ```
