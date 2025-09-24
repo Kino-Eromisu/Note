@@ -54,7 +54,7 @@ void pointerDemo() {
 
     char* buffer = new char[8];  //char是一个字节，要求这个buffer 有八个字节。
     // 分配了8个字节的内存，并返回了一个指向那块内存开始的指针
-    // memset：申请的内存，然后填充内存。
+    // memset：申请的内存，然后填充内存，需要 # include <cstring>
     memset(buffer, 0, 8); // 我们指定一个memset，用我们指定的数据去填充一个内存块.它会取一个值，比如0，然后取一个大小，也就是8字节
     // 当运行完成，我们应该删去这个内存块
     delete[] buffer; // 这是个数组，所以应该使用[]
@@ -77,7 +77,7 @@ void pointerDemo() {
 
     char* buffer = new char[8];  //char是一个字节，要求这个buffer 有八个字节。
     // 分配了8个字节的内存，并返回了一个指向那块内存开始的指针
-    // memset：申请的内存，然后填充内存。
+    // memset：申请的内存，然后填充内存，需要 # include <cstring>
     memset(buffer, 0, 8); // 我们指定一个memset，用我们指定的数据去填充一个内存块.它会取一个值，比如0，然后取一个大小，也就是8字节
     // 当运行完成，我们应该删去这个内存块
 
