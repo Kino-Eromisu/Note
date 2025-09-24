@@ -152,13 +152,23 @@ void referenceDemo() {
 class xxx{};
 public部分就是公开的，所有函数可见的。
 ```
+// 引用（Cherno）
+void referenceDemo() {
+    int a = 10;
+    int &ref = a; // ref 只存在在这里，是a的小名，我们如果打印ref，只会得到a
+    ref = 20; // 这里通过改变ref，将a改为了20
+    inforcement(a);
+}
+
 class Player{
 public: //在类以外的任何地方都可见
-    int x,y;
-    int speed;
-    void move( int xa, int ya) {
+    int x = 1,y = 2;
+    int speed = 10;
+    void move(int xa, int ya) {
         x += xa * speed;
         y += ya * speed;
+
+        std::cout << "x = " << x << ", y = " << y << std::endl;
     }
 }; // class  } need ;
 
