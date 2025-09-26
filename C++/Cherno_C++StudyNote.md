@@ -386,3 +386,8 @@ int main() {
 
 使用 struct：当你需要的是一个主要是公有数据的被动数据结构（POD - Plain Old Data），几乎没有或完全没有成员函数，或者只是简单的 getter/setter。例如：坐标点、配置参数、返回多个值的函数结果。  
 使用 class：当你需要的是一个具有完整封装、复杂行为、不变量的主动对象。大部分面向对象的设计都使用 class。  
+
+# 24 枚举（ENUM）
+枚举ENUM全称为enumeration，基本上就是一个数值集合，是给一个值命名的一种方法，但必须是**整数**。  
+<img width="711" height="799" alt="image" src="https://github.com/user-attachments/assets/556d7860-c390-43d7-a4a9-9248de62b525" />
+
