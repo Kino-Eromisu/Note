@@ -192,7 +192,9 @@ typedef struct OBCameraParams
 核心：将旋转平分，使图像平面共面且平行于基线
 <img width="789" height="551" alt="image" src="https://github.com/user-attachments/assets/871a3afa-fef0-4f56-9efc-d03f8af675c0" />
 过程原理：  
-立体矫正：<img width="399" height="208" alt="image" src="https://github.com/user-attachments/assets/a03cf9a6-4dc7-457e-941b-cc1769086554" />
+
+立体矫正：<img width="399" height="208" alt="image" src="https://github.com/user-attachments/assets/a03cf9a6-4dc7-457e-941b-cc1769086554" />  
+
 双目矫正：  
 
 非标定矫正：在不知道相机内参的情况下，仅通过两幅图像中的匹配点对来估计极线几何关系并进行矫正。（Hartley法）  
