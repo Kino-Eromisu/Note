@@ -190,7 +190,8 @@ typedef struct OBCameraParams
 极线矫正方法主要可以分为两类：基于标定的矫正 和 非标定的矫正。  
 基于标定：需要已知相机的内参（焦距、主点）和外参（旋转矩阵 R、平移向量 t）。这是最常用、最稳定、精度最高的方法。（Bouguet校正法）  
 核心：将旋转平分，使图像平面共面且平行于基线
-<img width="789" height="551" alt="image" src="https://github.com/user-attachments/assets/871a3afa-fef0-4f56-9efc-d03f8af675c0" />
+<img width="789" height="551" alt="image" src="https://github.com/user-attachments/assets/871a3afa-fef0-4f56-9efc-d03f8af675c0" />  
+
 过程原理：  
 
 立体矫正：<img width="399" height="208" alt="image" src="https://github.com/user-attachments/assets/a03cf9a6-4dc7-457e-941b-cc1769086554" />  
