@@ -1,4 +1,4 @@
-# 相机模型和标定 + 对极几何 笔记
+<img width="399" height="208" alt="image" src="https://github.com/user-attachments/assets/c3631054-429b-4750-b81d-8b433746e277" /># 相机模型和标定 + 对极几何 笔记
 
 ## 一、相机模型
 相机模型描述了**三维世界中的点**是如何被投影到**二维图像平面**上的。
@@ -142,6 +142,7 @@ typedef struct OBCameraParams
 对极几何实际上是“两幅图像之间的对极几何”，它是图像平面与以基线为轴的平面束的交的几何（这里的基线是指连接摄像机中心的直线）
 对极几何（Epipolar Geometry）描述的是两幅视图之间的内在射影关系，与外部场景无关，只依赖于摄像机内参数和这两幅视图之间的的相对姿态  
 = 用两张图像之间的几何约束，把“哪里可能是同一个 3D 点的投影”这一二维搜索问题降为一维搜索，并由此恢复相机位姿或场景三维结构
+**对极几何 是一个 框架、结构或模型。它描述的是两个相机视图之间的内在的射影几何关系**
 
 ### 约束公式
 <img width="241" height="86" alt="image" src="https://github.com/user-attachments/assets/92879700-e4dc-4365-8873-8cf3de5da612" />  
@@ -159,7 +160,8 @@ typedef struct OBCameraParams
 
 <img width="977" height="328" alt="image" src="https://github.com/user-attachments/assets/c648ddd8-d9d8-4fd3-87a7-3c000cfabe14" />
 
-### 极线约束
+### 极线约束（对极约束
+使用RANSAC等鲁棒性算法来从所有可能的匹配点中估计出最可靠的 F 矩阵。
 如果p和p'是匹配点，用F计算后结果必须为0。
 作用：排除错误的匹配点
 
@@ -176,16 +178,37 @@ typedef struct OBCameraParams
 - 若n = 8，且所有方程线性无关，则rank(A)=8，此时有唯一解，f为一条线。
 - 若n<8，解不唯一，无法确定F
 
+### 双目极线矫正
+**极线矫正的核心目标，是将两个非共面行对齐的图像平面，重投影到同一个平面上，使得一对图像上的对应极线变得完全水平对齐，并且位于相同的行上。**
+<img width="693" height="237" alt="image" src="https://github.com/user-attachments/assets/97f61eb9-c87c-4161-9e83-cd01932ab180" />  
+应用于：立体匹配与深度估计、三维重建、运动估计、虚拟视点合成
+
+- Fusiello校正法
+- Bouguet校正法
+- 补充 Hartley法 和 LMedS算法
+
+极线矫正方法主要可以分为两类：基于标定的矫正 和 非标定的矫正。  
+基于标定：需要已知相机的内参（焦距、主点）和外参（旋转矩阵 R、平移向量 t）。这是最常用、最稳定、精度最高的方法。（Bouguet校正法）  
+核心：将旋转平分，使图像平面共面且平行于基线
+<img width="789" height="551" alt="image" src="https://github.com/user-attachments/assets/871a3afa-fef0-4f56-9efc-d03f8af675c0" />
+过程原理：  
+立体矫正：<img width="399" height="208" alt="image" src="https://github.com/user-attachments/assets/a03cf9a6-4dc7-457e-941b-cc1769086554" />
+双目矫正：  
+
+非标定矫正：在不知道相机内参的情况下，仅通过两幅图像中的匹配点对来估计极线几何关系并进行矫正。（Hartley法）  
+核心：通过单应变换将极点映射到无穷远  
+<img width="849" height="628" alt="image" src="https://github.com/user-attachments/assets/db021ac1-fa06-48b7-8cd7-89298c17b965" />
+
 
 ## 参考资料
-三维视觉：原理与实践(课程笔记-相机模型与标定)：
+三维视觉：原理与实践(课程笔记-相机模型与标定)：  
 https://developer.orbbec.com.cn/v/blog_detail?id=903  
 
-对极几何：
+对极几何：  
 https://blog.csdn.net/tina_ttl/article/details/52749542?fromshare=blogdetail&sharetype=blogdetail&sharerId=52749542&sharerefer=PC&sharesource=weixin_61044335&sharefrom=from_link
-
+  
 https://blog.csdn.net/Bartender_VA11/article/details/136080481?fromshare=blogdetail&sharetype=blogdetail&sharerId=136080481&sharerefer=PC&sharesource=weixin_61044335&sharefrom=from_link  
-
+  
 https://en.wikipedia.org/wiki/Eight-point_algorithm
 
 
