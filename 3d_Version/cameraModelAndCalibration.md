@@ -1,4 +1,4 @@
-<img width="399" height="208" alt="image" src="https://github.com/user-attachments/assets/c3631054-429b-4750-b81d-8b433746e277" /># 相机模型和标定 + 对极几何 笔记
+# 相机模型和标定 + 对极几何 笔记
 
 ## 一、相机模型
 相机模型描述了**三维世界中的点**是如何被投影到**二维图像平面**上的。
