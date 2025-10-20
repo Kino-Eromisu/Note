@@ -5,7 +5,7 @@
 双目视觉(Stereo Camera)，代表公司 Leap Motion， ZED， 大疆;
 结构光(Structured-light)，代表公司有奥比中光，苹果iPhone X(Prime Sense)，微软 Kinect1，英特尔RealSense, Mantis Vision 等，在手机（iPhone，华为）中3D结构光主要用于人脸解锁、支付、美颜等场景。
 
-## 项目结构
+## 一般项目结构
 .  
 ├── config       # 相机参数文件  
 ├── core         # 相机核心算法包  
@@ -73,8 +73,29 @@ stereo_cam.yml相机参数文件，这个文件，包含了左右相机的相机
 标定代码会显示每一张图像的棋盘格的角点检测效果，如果发现有检测不到，或者角点检测出错，则需要自己手动删除这些图像，避免引入太大的误差  
 若误差超过0.1，建议重新调整摄像头并标定，不然效果会差很多  
 
+## 立体矫正、立体匹配、视差计算
+**立体校正**的目的是将拍摄于同一场景的左右两个视图进行数学上的投影变换，使得两个成像平面平行于基线，且同一个点在左右两幅图中位于同一行，简称共面行对准。只有达到共面行对准以后才可以应用三角原理计算距离。  
+<img width="533" height="351" alt="image" src="https://github.com/user-attachments/assets/4ed72cf3-b572-44ff-b932-76ccf636d464" />  
+**立体匹配**的目的是为左图中的每一个像素点在右图中找到其对应点（世界中相同的物理点），这样就可以计算出视差  
+1.图像中可能存在重复纹理和弱纹理，这些区域很难匹配正确  
+2.由于左右相机的拍摄位置不同，图像中几乎必然存在遮挡区域，在遮挡区域，左图中有一些像素点在右图中并没有对应的点，反之亦然  
+3.左右相机所接收的光照情况不同  
+4.过度曝光区域难以匹配  
+5.倾斜表面、弯曲表面、非朗伯体表面  
+6.较高的图像噪声等  
+**滤波后处理**：例如Guided Filter、Fast Global Smooth Filter（一种快速WLS滤波方法）、Bilatera Filter、TDSR、RBS等。 视差图滤波能够将稀疏视差转变为稠密视差，并在一定程度上降低视差图噪声，改善视差图的视觉效果，但是比较依赖初始视差图的质量。  
+**双目测距**：将像素坐标转换为三维坐标。在opencv中使用StereoRectify()函数可以得到一个重投影矩阵Q，它是一个4*4的视差图到深度图的映射矩阵(disparity-to-depth mapping matrix )，使用Q矩阵和cv2.reprojectImageTo3D即可实现将像素坐标转换为三维坐标，该函数会返回一个3通道的矩阵，分别存储X、Y、Z坐标（左摄像机坐标系下）。  
+<img width="976" height="706" alt="image" src="https://github.com/user-attachments/assets/8f3aaeb2-9839-468f-b280-37139f42063d" />  
+获得三维坐标后，可以使用python-pcl和Open3D库显示点云图  
+
+
 
 ## 参考内容
 CSDN:  
-https://blog.csdn.net/guyuealian/article/details/121301896?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522fcf425a4c92a1ca9859e12e379bade68%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=fcf425a4c92a1ca9859e12e379bade68&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_click~default-2-121301896-null-null.142^v102^pc_search_result_base8&utm_term=%E5%8F%8C%E7%9B%AE&spm=1018.2226.3001.4187  
+https://blog.csdn.net/guyuealian/article/details/121301896  
+
+https://blog.csdn.net/dulingwen/article/details/104142149  
+
+https://blog.csdn.net/xuyuhua1985/article/details/50151269  
+
 
