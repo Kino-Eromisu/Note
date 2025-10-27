@@ -269,6 +269,25 @@ int main() {
     return 0;
 }
 ```
+```cpp
+void function() {
+    static int count = 0;  // 看起来在函数内部
+    count++;
+}
+
+static int __hidden_count = 0;  // 实际上放在全局数据区
+
+void function() {
+    // 第一次调用时的检查逻辑
+    static bool __initialized = false;
+    if (!__initialized) {
+        __hidden_count = 0;  // 只执行一次
+        __initialized = true;
+    }
+    
+    __hidden_count++;
+}
+```
 
 **静态成员变量 (在类内部)**
 作用：属于类本身，而不是类的某个特定对象。所有该类的对象共享同一份静态成员变量  
